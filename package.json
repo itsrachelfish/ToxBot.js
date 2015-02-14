@@ -1,0 +1,10 @@
+{
+    "name": "toxbot",
+    "version": "0.0.1",
+    "description": "A simple bot for Tox.im",
+    "author": "Rachel Fish <rachel@wetfish.net>",
+    "dependencies":
+    {
+        "toxcore": "*"
+    }
+}
