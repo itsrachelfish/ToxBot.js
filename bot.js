@@ -8,8 +8,9 @@ var toxbot =
 {
     events: ['connectionStatus', 'friendAction', 'friendMessage', 'friendRequest', 'groupInvite', 'readReceipt'],
     
-    identity: false, // Filename for the currently loaded identity
-    autosave: false,
+    identity: false,    // Filename for the currently loaded identity
+    autosave: true,     // Whether or not to automatically save tox information
+    autofriend: true,   // Whether or not to automatically accept friend requests 
     
     connect: function()
     {
@@ -48,9 +49,34 @@ var toxbot =
         tox.start();
     },
 
-    _default: function()
+    _default: function(event)
     {
-        console.log(arguments);
+        console.log("Unhandled event!");
+        console.log('----- Properties -----');
+        console.log(event);
+        console.log('----- Prototypes -----');
+        console.log(event.__proto__);
+        console.log('-----');
+        interface.readline.prompt();
+    },
+
+    _friendRequest: function(event)
+    {
+        console.log("Recieved friend request: " + event.data());
+        console.log("From: " + event.publicKeyHex());
+
+        if(toxbot.autofriend)
+        {
+            tox.addFriendNoRequest(event.publicKey())
+            console.log("Friend request automatically accepted!");
+        }
+
+        if(toxbot.autosave && toxbot.identity)
+        {
+            tox.saveToFile(toxbot.identity);
+        }
+
+        interface.readline.prompt();
     },
 
     bind: function()
@@ -81,6 +107,11 @@ var toxbot =
 
     disconnect: function()
     {
+        if(toxbot.autosave && toxbot.identity)
+        {
+            tox.saveToFile(toxbot.identity);
+        }
+        
         toxbot.unbind();
         tox.stop();
     }
