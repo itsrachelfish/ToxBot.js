@@ -6,12 +6,14 @@ var tox = new toxcore.Tox();
 // Main bot code
 var toxbot =
 {
+    identity: false, // Filename for the currently loaded identity
+    autosave: false,
+    
     connect: function()
     {
         // Initialize stuff
         console.log("Connecting to Tox...");
         console.log("Tox ID: " + tox.getAddressHexSync());
-        interface.readline.prompt();
 
         // Start syncronization with the tox network
         tox.start();
@@ -26,7 +28,7 @@ var toxbot =
 // Command line interface
 var interface =
 {
-    commands: ['connect', 'disconnect', 'load', 'save', 'quit'],
+    commands: ['connect', 'disconnect', 'load', 'save', 'autosave', 'quit'],
     
     load: function()
     {
@@ -44,6 +46,7 @@ var interface =
         });
     },
 
+    // Process user input
     handle: function(line)
     {
         line = line.trim().split(/\s+/);
@@ -65,21 +68,81 @@ var interface =
     _connect: function(options)
     {
         toxbot.connect();
+        interface.readline.prompt();
     },
 
     _disconnect: function(options)
     {
         toxbot.disconnect();
+        interface.readline.prompt();
     },
 
+    // Load tox identity from a file
     _load: function(options)
     {
-        // Load tox identity from a file
+        var filename = options.join(' ');
+
+        // Make sure tox isn't currently connected
+        if(tox.isStarted())
+        {
+            console.log("Warning: Tox is already started, all unsaved data will be lost.");
+            toxbot.disconnect();
+        }
+
+        toxbot.identity = filename;
+
+        tox.loadFromFile(filename);
+        interface.readline.prompt();
     },
 
+    // Save tox identity to a file
     _save: function(options)
     {
-        // Save tox identity to a file
+        var filename = options.join(' ');
+
+        // Save existing identity file if no filename was passed
+        if(!filename && !toxbot.identity)
+        {
+            console.log("Warning: You must specify a filename.");
+        }
+        else if(toxbot.identity)
+        {
+            filename = toxbot.identity;
+        }
+
+        toxbot.identity = filename;
+        
+        tox.saveToFile(filename);
+        interface.readline.prompt();
+    },
+
+    // Update toxbot's identity saving behavior
+    _autosave: function(options)
+    {
+        var action = (options.shift() || '').toLowerCase();
+
+        if(action == 'on' || action == 'true' || action === 1)
+        {
+            toxbot.autosave = true;
+        }
+        else if(action == 'off' || action == 'false' || action === 0)
+        {
+            toxbot.autosave = false;
+        }
+        else
+        {
+            // Toggle current autosave state
+            toxbot.autosave = !toxbot.autosave;
+        }
+
+        console.log("Tox identity auto-saving is currently:", toxbot.autosave);
+
+        if(!toxbot.identity)
+        {
+            console.log("Warning: No tox identity file has been loaded, autosaving won't work until one is loaded.");
+        }
+
+        interface.readline.prompt();
     },
 
     _quit: function(options)
