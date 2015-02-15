@@ -17,6 +17,33 @@ var toxbot =
         console.log("Connecting to Tox...");
         console.log("Tox ID: " + tox.getAddressHexSync());
 
+         // Some nodes to bootstrap from
+        var nodes =
+        [
+            {
+                maintainer: 'Impyy',
+                address: '178.62.250.138',
+                port: 33445,
+                key: '788236D34978D1D5BD822F0A5BEBD2C53C64CC31CD3149350EE27D4D9A2F9B6B'
+            },
+        
+            {
+                maintainer: 'sonOfRa',
+                address: '144.76.60.215',
+                port: 33445,
+                key: '04119E835DF3E78BACF0F84235B300546AF8B936F035185E2A8E9E0A67C8924F'
+            }
+        ];
+
+        for(var i = 0, l = nodes.length; i < l; i++)
+        {
+            var node = nodes[i];
+            tox.bootstrapFromAddress(node.address, node.port, node.key);
+        }
+
+        // Bind event handlers
+        toxbot.bind();
+
         // Start syncronization with the tox network
         tox.start();
     },
@@ -33,9 +60,9 @@ var toxbot =
             var event = '_'+toxbot.events[i];
 
             if(typeof toxbot[event] != "function")
-                event = toxbot._default;
-            
-            tox.addListener(toxbot.events[i], toxbot[event]);
+                event = '_default';
+
+            tox.emitter.addListener(toxbot.events[i], toxbot[event]);
         }
     },
 
@@ -46,14 +73,15 @@ var toxbot =
             var event = '_'+toxbot.events[i];
 
             if(typeof toxbot[event] != "function")
-                event = toxbot._default;
+                event = '_default';
             
-            tox.removeListener(toxbot.events[i], toxbot[event]);
+            tox.emitter.removeListener(toxbot.events[i], toxbot[event]);
         }
     },
 
     disconnect: function()
     {
+        toxbot.unbind();
         tox.stop();
     }
 }
