@@ -120,7 +120,7 @@ var toxbot =
 // Command line interface
 var interface =
 {
-    commands: ['connect', 'disconnect', 'load', 'save', 'autosave', 'quit'],
+    commands: ['connect', 'disconnect', 'load', 'save', 'autosave', 'name', 'status', 'message', 'quit'],
     
     load: function()
     {
@@ -234,6 +234,27 @@ var interface =
             console.log("Warning: No tox identity file has been loaded, autosaving won't work until one is loaded.");
         }
 
+        interface.readline.prompt();
+    },
+
+    _name: function(options)
+    {
+        var name = options.join(' ');
+        tox.setNameSync(name);
+        interface.readline.prompt();
+    },
+
+    _status: function(options)
+    {
+        var status = parseInt(options[0]);
+        tox.setUserStatusSync(status);
+        interface.readline.prompt();
+    },
+
+    _message: function(options)
+    {
+        var message = options.join(' ');
+        tox.setStatusMessageSync(message);
         interface.readline.prompt();
     },
 
