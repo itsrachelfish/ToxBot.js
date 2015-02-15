@@ -6,6 +6,8 @@ var tox = new toxcore.Tox();
 // Main bot code
 var toxbot =
 {
+    events: ['connectionStatus', 'friendAction', 'friendMessage', 'friendRequest', 'groupInvite', 'readReceipt'],
+    
     identity: false, // Filename for the currently loaded identity
     autosave: false,
     
@@ -17,6 +19,37 @@ var toxbot =
 
         // Start syncronization with the tox network
         tox.start();
+    },
+
+    _default: function()
+    {
+        console.log(arguments);
+    },
+
+    bind: function()
+    {
+        for(var i = 0, l = toxbot.events.length; i < l; i++)
+        {
+            var event = '_'+toxbot.events[i];
+
+            if(typeof toxbot[event] != "function")
+                event = toxbot._default;
+            
+            tox.addListener(toxbot.events[i], toxbot[event]);
+        }
+    },
+
+    unbind: function()
+    {
+        for(var i = 0, l = toxbot.events.length; i < l; i++)
+        {
+            var event = '_'+toxbot.events[i];
+
+            if(typeof toxbot[event] != "function")
+                event = toxbot._default;
+            
+            tox.removeListener(toxbot.events[i], toxbot[event]);
+        }
     },
 
     disconnect: function()
