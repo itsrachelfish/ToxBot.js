@@ -9,33 +9,30 @@ var toxbot =
     connect: function()
     {
         // Initialize stuff
-        console.log("Starting ToxBot...");
+        console.log("Connecting to Tox...");
         console.log("Tox ID: " + tox.getAddressHexSync());
         interface.readline.prompt();
 
-        // Start running main application code
-        toxbot.interval = setInterval(toxbot.sync, 100);
-    },
-
-    sync: function()
-    {
-        // Syncronize with the tox network
-        tox.doSync();
+        // Start syncronization with the tox network
+        tox.start();
     },
 
     disconnect: function()
     {
-        clearInterval(toxbot.interval);
+        tox.stop();
     }
 }
 
 // Command line interface
 var interface =
 {
-    commands: ['connect', 'disconnect', 'load', 'save'],
+    commands: ['connect', 'disconnect', 'load', 'save', 'quit'],
     
     load: function()
     {
+        console.log("Welcome to ToxBot.js! Avalable commands are:");
+        console.log(interface.commands.join(', '));
+
         // Initialize the command line interface
         interface.readline = readline.createInterface(process.stdin, process.stdout);
         interface.readline.prompt();
@@ -85,12 +82,19 @@ var interface =
         // Save tox identity to a file
     },
 
+    _quit: function(options)
+    {
+        console.log("Bye!");
+
+        toxbot.disconnect();
+        interface.unload();
+    },
+
     unload: function()
     {
         // Stop requesting input
-        prompt.readline.close();
+        interface.readline.close();
     }
 }
 
-console.log();
 interface.load();
