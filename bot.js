@@ -6,11 +6,12 @@ var tox = new toxcore.Tox();
 // Main bot code
 var toxbot =
 {
-    events: ['connectionStatus', 'friendAction', 'friendMessage', 'friendRequest', 'groupInvite', 'readReceipt'],
+    events: ['connectionStatus', 'friendAction', 'friendMessage', 'friendRequest', 'groupInvite'],
     
     identity: false,    // Filename for the currently loaded identity
-    autosave: true,     // Whether or not to automatically save tox information
-    autofriend: true,   // Whether or not to automatically accept friend requests 
+    autosave: true,     // Automatically save tox information?
+    autofriend: true,   // Automatically accept friend requests?
+    autogroup: true,    // Automatically join group chats?
     
     connect: function()
     {
@@ -21,6 +22,20 @@ var toxbot =
          // Some nodes to bootstrap from
         var nodes =
         [
+            {
+                maintainer: 'nurupo',
+                address: '192.210.149.121',
+                port: 33445,
+                key: 'F404ABAA1C99A9D37D61AB54898F56793E1DEF8BD46B1038B9D822E8460FAB67'
+            },
+
+            {
+                maintainer: 'Jfreegman',
+                address: '104.219.184.206',
+                port: 443,
+                key: '8CD087E31C67568103E8C2A28653337E90E6B8EDA0D765D57C6B5172B4F1F04C'
+            },
+
             {
                 maintainer: 'Impyy',
                 address: '178.62.250.138',
@@ -79,6 +94,27 @@ var toxbot =
         interface.readline.prompt();
     },
 
+    _groupInvite: function(event)
+    {
+        console.log("Recieved group chat request.");
+
+        if(toxbot.autogroup)
+        {
+            if(event.isChatText())
+            {
+                tox.joinGroupchatSync(event.friend(), event.data());
+            }
+            else if(event.isChatAV())
+            {
+                tox.getAV().joinGroupchatSync(event.friend(), event.data());
+            }
+            
+            console.log("Group chat request automatically accepted!");
+        }
+
+        interface.readline.prompt();
+    },
+
     bind: function()
     {
         for(var i = 0, l = toxbot.events.length; i < l; i++)
@@ -88,7 +124,7 @@ var toxbot =
             if(typeof toxbot[event] != "function")
                 event = '_default';
 
-            tox.emitter.addListener(toxbot.events[i], toxbot[event]);
+            tox.on(toxbot.events[i], toxbot[event]);
         }
     },
 
@@ -101,7 +137,7 @@ var toxbot =
             if(typeof toxbot[event] != "function")
                 event = '_default';
             
-            tox.emitter.removeListener(toxbot.events[i], toxbot[event]);
+            tox.off(toxbot.events[i], toxbot[event]);
         }
     },
 
