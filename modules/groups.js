@@ -3,7 +3,7 @@ var tox, toxbot;
 // Module to handle group chat behavior
 var group =
 {
-    events: ['connectionStatus', 'friendAction', 'friendMessage', 'groupInvite'],
+    events: ['friendAction', 'friendMessage', 'groupInvite'],
 
     _groupInvite: function(event)
     {
