@@ -1,4 +1,5 @@
-var toxbot;
+var tox, toxbot;
+var readline = require('readline');
 
 // Readline interface
 var interface =
@@ -158,16 +159,21 @@ var interface =
 
 module.exports =
 {
-    load: function(client)
+    load: function(client, core)
     {
-        toxbot = client;
+        tox = client;
+        toxbot = core.toxbot;
+
         interface.load();
     },
 
     unload: function()
     {
         interface.unload();
+
+        delete tox;
         delete toxbot;
+        delete readline;
         delete interface;
     }
 };

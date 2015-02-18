@@ -3,6 +3,8 @@ var tox;
 // Functions for handling the tox protocol
 var toxbot =
 {
+    events: [],
+    
     identity: false,    // Filename for the currently loaded identity
     autosave: true,     // Automatically save tox information?
     autofriend: true,   // Automatically accept friend requests?
@@ -64,7 +66,7 @@ var toxbot =
         console.log('----- Prototypes -----');
         console.log(event.__proto__);
         console.log('-----');
-        interface.readline.prompt();
+//        interface.readline.prompt();
     },
 
     bind: function(index)
