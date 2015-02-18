@@ -1,1 +1,1 @@
-module.exports = ['interface', 'tox'];
+module.exports = ['tox', 'interface'];

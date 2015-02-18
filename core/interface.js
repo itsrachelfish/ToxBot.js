@@ -1,3 +1,5 @@
+var toxbot;
+
 // Readline interface
 var interface =
 {
@@ -158,7 +160,7 @@ module.exports =
 {
     load: function(client)
     {
-        var toxbot = client;
+        toxbot = client;
         interface.load();
     },
 
