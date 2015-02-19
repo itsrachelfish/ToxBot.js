@@ -31,7 +31,7 @@ var group =
         for(var i = 0, l = group.events.length; i < l; i++)
         {
             var event = group.events[i];
-            var handler = '_'.event;
+            var handler = '_' + event;
 
             if(typeof group[handler] == "function")
                 toxbot[handler] = group[handler];
@@ -48,7 +48,7 @@ var group =
         for(var i = 0, l = group.events.length; i < l; i++)
         {
             var event = group.events[i];
-            var handler = '_'.event;
+            var handler = '_' + event;
 
             // Skip unknown events
             var index = toxbot.events.indexOf(event);

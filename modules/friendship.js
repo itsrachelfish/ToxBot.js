@@ -29,7 +29,7 @@ var friendship =
         for(var i = 0, l = friendship.events.length; i < l; i++)
         {
             var event = friendship.events[i];
-            var handler = '_'.event;
+            var handler = '_' + event;
 
             if(typeof friendship[handler] == "function")
                 toxbot[handler] = friendship[handler];
@@ -46,7 +46,7 @@ var friendship =
         for(var i = 0, l = friendship.events.length; i < l; i++)
         {
             var event = friendship.events[i];
-            var handler = '_'.event;
+            var handler = '_' + event;
 
             // Skip unknown events
             var index = toxbot.events.indexOf(event);
