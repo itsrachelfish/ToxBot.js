@@ -3,7 +3,8 @@ var tox, toxbot;
 // Module to handle group chat behavior
 var group =
 {
-    events: ['friendAction', 'friendMessage', 'groupInvite'],
+    joined: false,
+    events: ['connectionStatus', 'friendAction', 'friendMessage', 'groupInvite'],
 
     _groupInvite: function(event)
     {
@@ -19,18 +20,28 @@ var group =
             {
                 tox.getAV().joinGroupchatSync(event.friend(), event.data());
             }
-            
+
+            group.joined = true;
             console.log("Group chat request automatically accepted!");
         }
 
 //        interface.readline.prompt();
     },
 
+    _connectionStatus: function(event)
+    {
+        if(event.isConnected() && group.joined)
+        {
+            // TODO: Make this only apply to a whitelist?
+            tox.inviteSync(event.friend(), 0);
+        }
+    },
+
     _friendMessage: function(event)
     {
         console.log(event.friend(), event.message());
 
-        if(event.message().toLowerCase().trim() == 'invite')
+        if(event.message().toLowerCase().trim() == 'invite' && group.joined)
         {
             // FISH CHAT YEAH!
             tox.inviteSync(event.friend(), 0);

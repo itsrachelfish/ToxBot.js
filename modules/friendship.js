@@ -3,7 +3,7 @@ var tox, toxbot;
 // Module to handle accepting friend requests
 var friendship =
 {
-    events: ['connectionStatus', 'friendRequest'],
+    events: ['friendRequest'],
 
     _friendRequest: function(event)
     {
