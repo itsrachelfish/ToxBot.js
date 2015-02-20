@@ -5,7 +5,7 @@
     "author": "Rachel Fish <rachel@wetfish.net>",
     "dependencies":
     {
-        "toxcore": "0.0.12",
+        "toxcore": "*",
         "readline": "*"
     }
 }

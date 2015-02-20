@@ -4,7 +4,7 @@ var readline = require('readline');
 // Readline interface
 var interface =
 {
-    commands: ['connect', 'disconnect', 'load', 'save', 'autosave', 'name', 'status', 'message', 'quit'],
+    commands: ['connect', 'disconnect', 'file', 'module', 'core', 'config', 'name', 'status', 'message', 'quit'],
     
     load: function()
     {
@@ -53,8 +53,28 @@ var interface =
         interface.readline.prompt();
     },
 
+    // Handler for function events
+    _file: function(options)
+    {
+        var action = options.shift().toLowerCase().trim();
+
+        if(action == 'load')
+        {
+            interface._fileLoad(options);
+        }
+        else if(action == 'save')
+        {
+            interface._fileSave(options);
+        }
+        else
+        {
+            console.log("Error! You must say file load [filename] or file save [filename].");
+            interface.readline.prompt();
+        }
+    },
+
     // Load tox identity from a file
-    _load: function(options)
+    _fileLoad: function(options)
     {
         var filename = options.join(' ');
 
@@ -72,7 +92,7 @@ var interface =
     },
 
     // Save tox identity to a file
-    _save: function(options)
+    _fileSave: function(options)
     {
         var filename = options.join(' ');
 
