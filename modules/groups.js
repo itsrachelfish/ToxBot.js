@@ -26,6 +26,17 @@ var group =
 //        interface.readline.prompt();
     },
 
+    _friendMessage: function(event)
+    {
+        console.log(event.friend(), event.message());
+
+        if(event.message().toLowerCase().trim() == 'invite')
+        {
+            // FISH CHAT YEAH!
+            tox.inviteSync(event.friend(), 0);
+        }
+    },
+
     bind: function()
     {
         for(var i = 0, l = group.events.length; i < l; i++)
