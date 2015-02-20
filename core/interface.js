@@ -1,4 +1,4 @@
-var tox, toxbot;
+var tox, core, toxbot;
 var readline = require('readline');
 
 // Readline interface
@@ -53,7 +53,7 @@ var interface =
         interface.readline.prompt();
     },
 
-    // Handler for function events
+    // Handler for file commands
     _file: function(options)
     {
         var action = options.shift().toLowerCase().trim();
@@ -110,6 +110,30 @@ var interface =
         
         tox.saveToFile(filename);
         interface.readline.prompt();
+    },
+
+    // Handler for loading modules
+    _module: function(options)
+    {
+        var commands = ['load', 'reload', 'unload'];
+        var command = options.shift().toLowerCase().trim();
+
+        if(commands.indexOf(command) > -1)
+        {
+            core[command]({type: 'modules', name: options[0]});
+        }
+    },
+
+    // Handler for loading core modules
+    _core: function(options)
+    {
+        var commands = ['load', 'reload', 'unload'];
+        var command = options.shift().toLowerCase().trim();
+
+        if(commands.indexOf(command) > -1)
+        {
+            core[command]({type: 'core', name: options[0]});
+        }
     },
 
     // Update toxbot's identity saving behavior
@@ -179,10 +203,11 @@ var interface =
 
 module.exports =
 {
-    load: function(client, core)
+    load: function(client, _core)
     {
         tox = client;
-        toxbot = core.toxbot;
+        toxbot = _core.toxbot;
+        core = _core;
 
         interface.load();
     },
@@ -192,6 +217,7 @@ module.exports =
         interface.unload();
 
         delete tox;
+        delete core;
         delete toxbot;
         delete readline;
         delete interface;
