@@ -27,24 +27,24 @@ var toxbot =
             },
 
             {
-                maintainer: 'Jfreegman',
-                address: '104.219.184.206',
-                port: 443,
-                key: '8CD087E31C67568103E8C2A28653337E90E6B8EDA0D765D57C6B5172B4F1F04C'
+                maintainer: 'pastly',
+                address: '192.3.173.88',
+                port: 33445,
+                key: '3E1FFDEB667BFF549F619EC6737834762124F50A89C8D0DBF1DDF64A2DD6CD1B'
             },
 
             {
-                maintainer: 'Impyy',
-                address: '178.62.250.138',
+                maintainer: 'Busindre',
+                address: '205.185.116.116',
                 port: 33445,
-                key: '788236D34978D1D5BD822F0A5BEBD2C53C64CC31CD3149350EE27D4D9A2F9B6B'
+                key: 'A179B09749AC826FF01F37A9613F6B57118AE014D4196A0E1105A98F93A54702'
             },
         
             {
-                maintainer: 'sonOfRa',
-                address: '144.76.60.215',
+                maintainer: 'stal',
+                address: '23.226.230.47',
                 port: 33445,
-                key: '04119E835DF3E78BACF0F84235B300546AF8B936F035185E2A8E9E0A67C8924F'
+                key: 'A09162D68618E742FFBCA1C2C70385E6679604B2D80EA6E84AD0996A1AC8A074'
             }
         ];
 
