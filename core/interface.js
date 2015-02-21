@@ -136,32 +136,38 @@ var interface =
         }
     },
 
-    // Update toxbot's identity saving behavior
-    _autosave: function(options)
+    // Handler for changing configuration
+    _config: function(options)
     {
+        var variables = ['autosave', 'autofriend', 'autogroup'];
+        var variable = options.shift();
         var action = (options.shift() || '').toLowerCase();
 
-        if(action == 'on' || action == 'true' || action === 1)
+        // Ignore invalid config options
+        if(variables.indexOf(variable) < 0)
         {
-            toxbot.autosave = true;
-        }
-        else if(action == 'off' || action == 'false' || action === 0)
-        {
-            toxbot.autosave = false;
+            console.log("Invalid configuration option! Available options are:");
+            console.log(variables.join(', '));
         }
         else
         {
-            // Toggle current autosave state
-            toxbot.autosave = !toxbot.autosave;
+            if(action == 'on' || action == 'true' || action === 1)
+            {
+                toxbot[variable] = true;
+            }
+            else if(action == 'off' || action == 'false' || action === 0)
+            {
+                toxbot[variable] = false;
+            }
+
+            console.log("Option " + variable + " set to:", toxbot.autosave);
+
+            if(!toxbot.identity && variable == 'autosave')
+            {
+                console.log("Warning: No tox identity file has been loaded, autosaving won't work until one is loaded.");
+            }
         }
-
-        console.log("Tox identity auto-saving is currently:", toxbot.autosave);
-
-        if(!toxbot.identity)
-        {
-            console.log("Warning: No tox identity file has been loaded, autosaving won't work until one is loaded.");
-        }
-
+        
         interface.readline.prompt();
     },
 
