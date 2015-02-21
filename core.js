@@ -47,9 +47,19 @@ module.exports = (function()
             {
                 // Create a unique ID for the module based on it's type and name
                 var module_id = module.type + "/" + module.name;
+                var module;
 
                 // Now require the module
-                core.loaded[module_id] = require(path);
+                try
+                {
+                    module = require(path);
+                }
+                catch(error)
+                {
+                    console.log("Error: The module failed to require!", error);
+                }
+                
+                core.loaded[module_id] = module;
 
                 // And check if it has a load function
                 if(typeof core.loaded[module_id].load == "function")
