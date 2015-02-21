@@ -66,6 +66,7 @@ module.exports =
     {
         tox = client;
         toxbot = core.toxbot;
+        interface = core.interface;
 
         friendship.bind();
     },
@@ -76,5 +77,6 @@ module.exports =
         
         delete tox;
         delete toxbot;
+        delete interface;
     }
 }
