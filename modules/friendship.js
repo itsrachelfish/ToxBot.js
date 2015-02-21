@@ -1,4 +1,4 @@
-var tox, toxbot;
+var tox, toxbot, interface;
 
 // Module to handle accepting friend requests
 var friendship =
@@ -21,7 +21,7 @@ var friendship =
             tox.saveToFile(toxbot.identity);
         }
 
-//        interface.readline.prompt();
+        interface.readline.prompt();
     },
 
     bind: function()

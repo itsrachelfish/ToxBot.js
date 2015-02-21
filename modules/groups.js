@@ -1,4 +1,4 @@
-var tox, toxbot;
+var tox, toxbot, interface;
 
 // Module to handle group chat behavior
 var group =
@@ -25,7 +25,7 @@ var group =
             console.log("Group chat request automatically accepted!");
         }
 
-//        interface.readline.prompt();
+        interface.readline.prompt();
     },
 
     _connectionStatus: function(event)
@@ -90,6 +90,7 @@ module.exports =
     {
         tox = client;
         toxbot = core.toxbot;
+        interface = core.interface;
 
         group.bind();
     },
@@ -100,5 +101,6 @@ module.exports =
         
         delete tox;
         delete toxbot;
+        delete interface;
     }
 }

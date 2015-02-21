@@ -205,6 +205,7 @@ module.exports =
 {
     load: function(client, _core)
     {
+        _core.interface = interface;
         tox = client;
         toxbot = _core.toxbot;
         core = _core;
@@ -212,10 +213,11 @@ module.exports =
         interface.load();
     },
 
-    unload: function()
+    unload: function(client, _core)
     {
         interface.unload();
 
+        delete _core.interface;
         delete tox;
         delete core;
         delete toxbot;
