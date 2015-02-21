@@ -32,6 +32,10 @@ var group =
     {
         if(event.isConnected() && group.joined)
         {
+            var friend = tox.getFriendNameSync(event.friend());
+            console.log(friend + " came online! Auto inviting...");
+            interface.readline.prompt();
+            
             // TODO: Make this only apply to a whitelist?
             tox.inviteSync(event.friend(), 0);
         }
@@ -39,7 +43,9 @@ var group =
 
     _friendMessage: function(event)
     {
-        console.log(event.friend(), event.message());
+        var friend = tox.getFriendNameSync(event.friend());
+        console.log(event.friend(), friend, event.message());
+        interface.readline.prompt();
 
         if(event.message().toLowerCase().trim() == 'invite' && group.joined)
         {
