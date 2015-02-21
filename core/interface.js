@@ -4,7 +4,7 @@ var readline = require('readline');
 // Readline interface
 var interface =
 {
-    commands: ['connect', 'disconnect', 'file', 'module', 'core', 'config', 'name', 'status', 'message', 'quit'],
+    commands: ['connect', 'disconnect', 'file', 'module', 'core', 'config', 'name', 'status', 'message', 'friends', 'quit'],
     
     load: function()
     {
@@ -189,6 +189,30 @@ var interface =
     {
         var message = options.join(' ');
         tox.setStatusMessageSync(message);
+        interface.readline.prompt();
+    },
+
+    _friends: function(options)
+    {
+        var showHex = (options.shift() || '').trim();
+        var friends = tox.getFriendListSync();
+
+        for(var i = 0, l = friends.length; i < l; i++)
+        {
+            var name = tox.getFriendNameSync(friends[i]);
+            var status = tox.getFriendStatusMessageSync(friends[i]);
+            var hex = tox.getFriendPublicKeyHexSync(friends[i]);
+
+            if(showHex)
+            {
+                console.log(i, hex, name, status);
+            }
+            else
+            {
+                console.log(i, name, status);
+            }
+        }
+
         interface.readline.prompt();
     },
 
