@@ -8,6 +8,7 @@ var group =
 
     _groupInvite: function(event)
     {
+        console.log(" ");
         console.log("Recieved group chat request.");
 
         if(toxbot.autogroup)
@@ -33,6 +34,7 @@ var group =
         if(event.isConnected() && group.joined)
         {
             var friend = tox.getFriendNameSync(event.friend());
+            console.log(" ");
             console.log(friend + " came online! Auto inviting...");
             interface.readline.prompt();
             
@@ -44,6 +46,7 @@ var group =
     _friendMessage: function(event)
     {
         var friend = tox.getFriendNameSync(event.friend());
+        console.log(" ");
         console.log(event.friend(), friend, event.message());
         interface.readline.prompt();
 

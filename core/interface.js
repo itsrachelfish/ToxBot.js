@@ -122,6 +122,8 @@ var interface =
         {
             core[command]({type: 'modules', name: options[0]});
         }
+
+        interface.readline.prompt();
     },
 
     // Handler for loading core modules
@@ -134,6 +136,8 @@ var interface =
         {
             core[command]({type: 'core', name: options[0]});
         }
+
+        interface.readline.prompt();
     },
 
     // Handler for changing configuration

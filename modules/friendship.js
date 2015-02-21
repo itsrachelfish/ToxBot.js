@@ -7,6 +7,7 @@ var friendship =
 
     _friendRequest: function(event)
     {
+        console.log(" ");
         console.log("Recieved friend request: " + event.data());
         console.log("From: " + event.publicKeyHex());
 
