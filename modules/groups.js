@@ -101,11 +101,13 @@ module.exports =
         toxbot = core.toxbot;
         interface = core.interface;
 
+        group.joined = core.joined;
         group.bind();
     },
 
-    unload: function()
+    unload: function(client, core)
     {
+        core.joined = group.joined;
         group.unbind();
         
         delete tox;
